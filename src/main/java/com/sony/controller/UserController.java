@@ -22,7 +22,7 @@ public class UserController {
 	}
 	
 	@GetMapping(path="/{id}",produces="application/json")
-	public ResponseEntity<?> handleGetOne(@PathVariable String id){
+	public ResponseEntity<User> handleGetOne(@PathVariable String id){
 		User user=mgr.getUserById(id);
 		if(user==null) {
 			return ResponseEntity.notFound().build();

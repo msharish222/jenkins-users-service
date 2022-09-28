@@ -28,10 +28,16 @@ pipeline {
         }
         
         }
-           stage('jar'){
+           stage('build'){
                steps{
                    sh 'mvn package -DskipTests=true'
                }
            }
+         
+         stage('dockerize'){
+         steps{
+         sh 'docker build -t user-service:latest .'
+         }
+         }  
         }
     }

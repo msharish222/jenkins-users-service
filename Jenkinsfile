@@ -1,5 +1,12 @@
 pipeline {
     agent any
+    
+    environment{
+    	DOCKER_IMG_NAME='user-service'
+    	DOCKER_TMP_CONTAINER_NAME='tmp-user-service-container'
+    }
+    
+    
   stages {
         
         
@@ -10,6 +17,7 @@ pipeline {
         }
            stage('compile'){
             steps{
+            	echo 'compiling source files...'
                 sh 'mvn compile'
             }
         }
@@ -36,7 +44,8 @@ pipeline {
          
          stage('dockerize'){
          steps{
-         sh 'docker build -t user-service:latest .'
+         echo 'building the docker image for user-service...'
+         sh 'docker build -t ${DOCKER_IMG_NAME}:latest -t ${DOCKER_IMG_NAME}:${env.BUILD_ID} .'
          }
          }  
          
@@ -44,7 +53,8 @@ pipeline {
          
            steps {
            
-           sh 'docker run -dp 7070:8080 --rm --name tmp-user-service-container user-service:latest'
+           echo 'running the tmp-user-service-container for integration testing...'
+           sh 'docker run -dp 7070:8080 --rm --name ${DOCKER_TMP_CONTAINER_NAME} ${DOCKER_IMG_NAME}:latest'
            sleep 20
            sh 'curl -i http://localhost:7070/api/users'
            
@@ -55,7 +65,8 @@ pipeline {
         post{
         
         	always {
-        		sh 'docker stop tmp-user-service-container'
+        	echo 'stopping and removing the tmp-user-service-container...'
+        		sh 'docker stop ${DOCKER_TMP_CONTAINER_NAME}'
         	}
         }
     }

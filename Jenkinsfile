@@ -4,7 +4,7 @@ pipeline {
     environment{
     	DOCKER_IMG_NAME="user-service"
     	DOCKER_TMP_CONTAINER_NAME="tmp-user-service-container"
-    	DOCKER REPO="harishms7"
+    	DOCKER_REPO="harishms7"
     }
     
     

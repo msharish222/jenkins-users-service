@@ -50,7 +50,7 @@ pipeline {
          }
          }  
          
-         /*stage('integration tests'){
+         stage('integration tests'){
          
            steps {
            
@@ -60,7 +60,7 @@ pipeline {
            sh 'curl -i http://localhost:7070/api/users'
            
            }
-         }*/
+         }
          
          stage('docker publish')
          {
